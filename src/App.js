@@ -1,24 +1,34 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react';
+import MainPage from './pages/MainPage'
+import LoginPage from './pages/LoginPage'
+import openSocket from 'socket.io-client';
+
+let socket;
+let user;
 
 function App() {
+
+  const [auth, setAuth] = useState(false);
+
+  function startSocketAndAuth(key) {
+    socket = openSocket("http://cc.dawnsheedy.com");
+    socket.on('connect', function () {
+      console.log("connected")
+      socket.emit('auth', { token: key });
+    });
+    socket.on('user-assignment', (data) => {
+      user = data.user;
+      setAuth(true);
+    });
+  }
+
+  function isAuth() {
+    return (auth) ? <MainPage user={user} socket={socket} /> : <LoginPage setToken={ startSocketAndAuth } />
+  }
+  
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      {isAuth()}
     </div>
   );
 }
