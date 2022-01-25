@@ -37,7 +37,7 @@ class SpeakerCreator extends Component {
                 this.createSpeaker();
             }}}>
                 <FormControl id='createSpeakerForm'
-                    placeholder="SuperMCGamer"
+                    placeholder="Speaker Name"
                 />
                 <InputGroup.Append>
                     <Button variant="outline-primary" onClick={this.handleSubmit}>Create</Button>

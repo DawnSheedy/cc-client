@@ -11,7 +11,7 @@ function App() {
   const [auth, setAuth] = useState(false);
 
   function startSocketAndAuth(key) {
-    socket = openSocket("http://cc.dawnsheedy.com");
+    socket = openSocket("http://localhost:8000");
     socket.on('connect', function () {
       console.log("connected")
       socket.emit('auth', { token: key });
